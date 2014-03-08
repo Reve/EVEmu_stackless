@@ -27,9 +27,11 @@
 #   send is a little over the top.  It should be possible to add it to the
 #   rest of the queued data
 
-import stackless
 import asyncore, weakref
+import stackless
+
 import socket as stdsocket # We need the "socket" name for the function we export.
+
 
 # If we are to masquerade as the socket module, we need to provide the constants.
 if "__all__" in stdsocket.__dict__:

@@ -1,9 +1,7 @@
-import stackless
 import logging
-import marshal
+import stackless
 
-import PacketType
-import EVEVersion
+import EVESession
 
 
 class Connection:
@@ -18,7 +16,10 @@ class Connection:
 
         self.control = control
         self.manager = manager
-
+        
+        self.session = EVESession()
+        self.step = 0
+        
         stackless.schedule()
 
     def network(self, clientsocket, address):
@@ -26,29 +27,27 @@ class Connection:
 
         data = ''
         while clientsocket.connect:
-            data += clientsocket.recv(4096)
+            
+            if EVESession.EVE_VERSION_EXCHANGE == self.step:
+                data = self.session.sendVersionExchange(0)
+                clientsocket.sendall(data)
+            elif EVESession.EVE_COMMAND == self.step:
+                pass
+            elif EVESession.EVE_CRYPTO == self.step:
+                pass
+            elif EVESession.EVE_AUTHENTICATION == self.step:
+                pass
+            elif EVESession.EVE_FUNC_RESULT == self.step:
+                pass
+            elif EVESession.EVE_PACKET_READING == self.step:
+                pass
+
+            data = clientsocket.recv(4096)
             if data == '':
                 break
-
-            # Check for a marshalled header
-            #if PacketType.MARSHALLED_HEADER in data:
-             #   print("Received marshalled data: " + data)
-
-            versionPkt = (
-                EVEVersion.EVEBirthday,
-                EVEVersion.MachoNetVersion,
-                0,
-                EVEVersion.EVEVersionNumber,
-                EVEVersion.EVEBuildVersion,
-                EVEVersion.EVEProjectVersion
-                )
-
-            data = marshal.dumps(versionPkt)
-
-            clientsocket.send(data)
-
-            # Else check for gziped data
-
+            
+            logging.info(data)
+            
             data = ''
             stackless.schedule()
 
@@ -57,7 +56,6 @@ class Connection:
 
     def close(self, clientsocket):
         clientsocket.close()
-
 
 
 

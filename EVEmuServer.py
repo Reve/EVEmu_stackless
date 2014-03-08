@@ -5,11 +5,9 @@ StacklessSocket.install()
 import socket
 
 import Connection
-import EVEVersion
 
 class Server(object):
     def __init__(self, conn):
-
         self.connectedClients = []
 
         # Create an INET, STREAMing socket
