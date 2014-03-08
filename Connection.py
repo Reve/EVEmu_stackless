@@ -1,8 +1,9 @@
 import stackless
 import logging
-import socket, struct
+import marshal
 
 import PacketType
+import EVEVersion
 
 
 class Connection:
@@ -30,8 +31,21 @@ class Connection:
                 break
 
             # Check for a marshalled header
-            if PacketType.MARSHALLED_HEADER in data:
-                print("Received marshalled data: " + data)
+            #if PacketType.MARSHALLED_HEADER in data:
+             #   print("Received marshalled data: " + data)
+
+            versionPkt = (
+                EVEVersion.EVEBirthday,
+                EVEVersion.MachoNetVersion,
+                0,
+                EVEVersion.EVEVersionNumber,
+                EVEVersion.EVEBuildVersion,
+                EVEVersion.EVEProjectVersion
+                )
+
+            data = marshal.dumps(versionPkt)
+
+            clientsocket.send(data)
 
             # Else check for gziped data
 
@@ -43,7 +57,6 @@ class Connection:
 
     def close(self, clientsocket):
         clientsocket.close()
-
 
 
 
