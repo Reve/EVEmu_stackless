@@ -1,7 +1,7 @@
 import logging
 import stackless
 
-import EVESession
+from EVESession import EVESession
 
 
 class Connection:
