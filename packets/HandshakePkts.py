@@ -82,8 +82,8 @@ class CryptoAPIRequestParams:
         return ({
             'crypting_sessionkey': self.sessionKey,
             'signing_hashmethod': self.hashMethod,
-            'crypting_sessionkeylength': self.sessionKeyLength},
-            'crypting_securityprovidertype': self.provider},
+            'crypting_sessionkeylength': self.sessionKeyLength,
+            'crypting_securityprovidertype': self.provider,
             'crypting_sessionkeymethod': self.sessionKeyMethod
             })
 
@@ -92,17 +92,17 @@ class CryptoChallengePacket:
     def __init__(self, clientChallenge, machoVersion, bootVersion, 
         bootBuild, bootCodename, bootRegion, userName, 
         userPassword, userPasswordHash, userLanguageID, userAffiliateID):
-    self.clientChallenge = clientChallenge
-    self.machoVersion = machoVersion
-    self.bootVersion = bootVersion
-    self.bootBuild = bootBuild
-    self.bootCodename = bootCodename
-    self.bootRegion = bootRegion
-    self.userName = userName
-    self.userPassword = userPassword
-    self.userPasswordHash = userPasswordHash
-    self.userLanguageID = userLanguageID
-    self.userAffiliateID = userAffiliateID
+        self.clientChallenge = clientChallenge
+        self.machoVersion = machoVersion
+        self.bootVersion = bootVersion
+        self.bootBuild = bootBuild
+        self.bootCodename = bootCodename
+        self.bootRegion = bootRegion
+        self.userName = userName
+        self.userPassword = userPassword
+        self.userPasswordHash = userPasswordHash
+        self.userLanguageID = userLanguageID
+        self.userAffiliateID = userAffiliateID
 
     def getTuple(self):
         return (
@@ -124,22 +124,22 @@ class CryptoChallengePacket:
 class CryptoServerHandshake:
 
     def __init__(self, serverChallenge, funcMarshaledCode, verification, context,
-        challengeResponseHash, machoVersion, bootVersion, bootBuild, bootCodename
+        challengeResponseHash, machoVersion, bootVersion, bootBuild, bootCodename,
         bootRegion, clusterUserCount, proxyNodeID, userLogonQueuePosition, imageServerURL):
-    self.serverChallenge = serverChallenge
-    self.funcMarshaledCode = funcMarshaledCode
-    self.verification = verification
-    self.context = context
-    self.challengeResponseHash = challengeResponseHash
-    self.machoVersion = machoVersion
-    self.bootVersion = bootVersion
-    self.bootBuild = bootBuild
-    self.bootCodename = bootCodename
-    self.bootRegion = bootRegion
-    self.clusterUserCount = clusterUserCount
-    self.proxyNodeID  = proxyNodeID
-    self.userLogonQueuePosition = userLogonQueuePosition
-    self.imageServerURL = imageServerURL
+        self.serverChallenge = serverChallenge
+        self.funcMarshaledCode = funcMarshaledCode
+        self.verification = verification
+        self.context = context
+        self.challengeResponseHash = challengeResponseHash
+        self.machoVersion = machoVersion
+        self.bootVersion = bootVersion
+        self.bootBuild = bootBuild
+        self.bootCodename = bootCodename
+        self.bootRegion = bootRegion
+        self.clusterUserCount = clusterUserCount
+        self.proxyNodeID  = proxyNodeID
+        self.userLogonQueuePosition = userLogonQueuePosition
+        self.imageServerURL = imageServerURL
 
     def getTuple():
         return (
@@ -181,21 +181,21 @@ class CryptoHandshakeResultAck:
 
     def __init__(self, liveUpdates, languageID, userID, maxSessionTime, userType,
         role, address, inDetention, clientHash, userClientID):
-    self.liveUpdates = liveUpdates
-    self.languageID = languageID
-    self.userID = userID
-    self.maxSessionTime = maxSessionTime
-    self.userType = userType
-    self.role = role
-    self.address = address
-    self.inDetention = inDetention
-    self.clientHash = clientHash
-    self.userClientID = userClientID
+        self.liveUpdates = liveUpdates
+        self.languageID = languageID
+        self.userID = userID
+        self.maxSessionTime = maxSessionTime
+        self.userType = userType
+        self.role = role
+        self.address = address
+        self.inDetention = inDetention
+        self.clientHash = clientHash
+        self.userClientID = userClientID
 
-    def getTuple(self):
+    def getDict(self):
         return {
-            {'liveUpdates': liveUpdates},
-            {'session_init': {
+            'liveUpdates': self.liveUpdates,
+            'session_init': {
                             'languageID': self.languageID,
                             'userid': self.userID,
                             'maxSessionTime': self.maxSessionTime, #seen None
@@ -203,10 +203,9 @@ class CryptoHandshakeResultAck:
                             'role': self.role,
                             'address': self.address,
                             'inDetention': self.inDetention
-                            }
-            },
-            {'client_hash': self.clientHash},
-            {'user_clientid': self.userClientID}
+                            },
+            'client_hash': self.clientHash,
+            'user_clientid': self.userClientID
         }
 
 

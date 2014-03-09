@@ -21,7 +21,7 @@ class EVESession():
                                     EVEVersion.EVEBuildVersion,
                                     EVEVersion.EVEProjectVersion
                                     )
-        vePkt = ve.getVersionAsTuple()
+        vePkt = ve.getTuple()
         return marshal.dumps(vePkt)
     
     def handleVersion(self):
