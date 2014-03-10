@@ -1,7 +1,5 @@
-
-# first packet sent to the client to make sure we are talking with the ritght client
+# first packet sent to the client to make sure we are talking with the right client
 class VersionExchangeServerPkt:
-    
     def __init__(self, birthday, machoNet, userCount, versionNumber, buildVersion, projVersion):
         self.birthday = birthday
         self.machoNet = machoNet
@@ -9,7 +7,7 @@ class VersionExchangeServerPkt:
         self.versionNumber = versionNumber
         self.buildVersion = buildVersion
         self.projVersion = projVersion
-        
+
     def getPacket(self):
         return (
             self.birthday,
@@ -18,12 +16,11 @@ class VersionExchangeServerPkt:
             self.versionNumber,
             self.buildVersion,
             self.projVersion,
-            None                # update_info
-            )
+            None  # update_info
+        )
 
 
 class VersionExchangeClientPkt:
-    
     def __init__(self, birthday, machoNet, userCount, versionNumber, buildVersion, projVersion):
         self.birthday = birthday
         self.machoNet = machoNet
@@ -31,7 +28,7 @@ class VersionExchangeClientPkt:
         self.versionNumber = versionNumber
         self.buildVersion = buildVersion
         self.projVersion = projVersion
-        
+
     def getPacket(self):
         return (
             self.birthday,
@@ -40,37 +37,36 @@ class VersionExchangeClientPkt:
             self.versionNumber,
             self.buildVersion,
             self.projVersion
-            )
+        )
+
 
 # This packet places client in connection queue and sends queue position
 class NetCommand_QC:
-
     def __init__(self, queuePosition):
         self.queuePosition = queuePosition
 
     def getPacket(self):
-        return (None, self.queuePosition)
+        return None, self.queuePosition
 
 
 class NetCommand_VK:
-
     def __init__(self, vipKey):
         self.vipKey = vipKey
 
     def getPacket(self):
-        return (None, self.vipKey)
+        return None, self.vipKey
+
 
 class CryptoRequestPacket:
-
     def __init__(self, keyVersion, keyParams):
         self.keyVersion = keyVersion
         self.keyParams = keyParams
 
     def getPacket(self):
-        return (self.keyVersion, self.keyParams)
+        return self.keyVersion, self.keyParams
+
 
 class CryptoAPIRequestParams:
-
     def __init__(self, sessionKey, hashMethod, sessionKeyLength, provider, sessionKeyMethod):
         self.sessionKey = sessionKey
         self.hashMethod = hashMethod
@@ -78,20 +74,20 @@ class CryptoAPIRequestParams:
         self.provider = provider
         self.sessionKeyMethod = sessionKeyMethod
 
-    def getTuple(self):
+    def getPacket(self):
         return ({
-            'crypting_sessionkey': self.sessionKey,
-            'signing_hashmethod': self.hashMethod,
-            'crypting_sessionkeylength': self.sessionKeyLength,
-            'crypting_securityprovidertype': self.provider,
-            'crypting_sessionkeymethod': self.sessionKeyMethod
-            })
+                    'crypting_sessionkey': self.sessionKey,
+                    'signing_hashmethod': self.hashMethod,
+                    'crypting_sessionkeylength': self.sessionKeyLength,
+                    'crypting_securityprovidertype': self.provider,
+                    'crypting_sessionkeymethod': self.sessionKeyMethod
+                })
+
 
 class CryptoChallengePacket:
-
-    def __init__(self, clientChallenge, machoVersion, bootVersion, 
-        bootBuild, bootCodename, bootRegion, userName, 
-        userPassword, userPasswordHash, userLanguageID, userAffiliateID):
+    def __init__(self, clientChallenge, machoVersion, bootVersion,
+                 bootBuild, bootCodename, bootRegion, userName,
+                 userPassword, userPasswordHash, userLanguageID, userAffiliateID):
         self.clientChallenge = clientChallenge
         self.machoVersion = machoVersion
         self.bootVersion = bootVersion
@@ -104,7 +100,7 @@ class CryptoChallengePacket:
         self.userLanguageID = userLanguageID
         self.userAffiliateID = userAffiliateID
 
-    def getTuple(self):
+    def getPacket(self):
         return (
             self.clientChallenge,
             {
@@ -122,10 +118,9 @@ class CryptoChallengePacket:
 
 
 class CryptoServerHandshake:
-
     def __init__(self, serverChallenge, funcMarshaledCode, verification, context,
-        challengeResponseHash, machoVersion, bootVersion, bootBuild, bootCodename,
-        bootRegion, clusterUserCount, proxyNodeID, userLogonQueuePosition, imageServerURL):
+                 challengeResponseHash, machoVersion, bootVersion, bootBuild, bootCodename,
+                 bootRegion, clusterUserCount, proxyNodeID, userLogonQueuePosition, imageServerURL):
         self.serverChallenge = serverChallenge
         self.funcMarshaledCode = funcMarshaledCode
         self.verification = verification
@@ -137,11 +132,11 @@ class CryptoServerHandshake:
         self.bootCodename = bootCodename
         self.bootRegion = bootRegion
         self.clusterUserCount = clusterUserCount
-        self.proxyNodeID  = proxyNodeID
+        self.proxyNodeID = proxyNodeID
         self.userLogonQueuePosition = userLogonQueuePosition
         self.imageServerURL = imageServerURL
 
-    def getTuple():
+    def getPacket(self):
         return (
             self.serverChallenge,
             (
@@ -164,23 +159,22 @@ class CryptoServerHandshake:
 
 
 class CryptoHandshakeResult:
-
     def __init__(self, challengeResponseHash, funcOutput, funcResult):
         self.challengeResponseHash = challengeResponseHash
         self.funcOutput = funcOutput
         self.funcResult = funcResult
 
-    def getTuple(self):
+    def getPacket(self):
         return (
             self.challengeResponseHash,
             self.funcOutput,
             self.funcResult
-            )
-            
-class CryptoHandshakeResultAck:
+        )
 
+
+class CryptoHandshakeResultAck:
     def __init__(self, liveUpdates, languageID, userID, maxSessionTime, userType,
-        role, address, inDetention, clientHash, userClientID):
+                 role, address, inDetention, clientHash, userClientID):
         self.liveUpdates = liveUpdates
         self.languageID = languageID
         self.userID = userID
@@ -192,18 +186,18 @@ class CryptoHandshakeResultAck:
         self.clientHash = clientHash
         self.userClientID = userClientID
 
-    def getDict(self):
+    def getPacket(self):
         return {
             'liveUpdates': self.liveUpdates,
             'session_init': {
-                            'languageID': self.languageID,
-                            'userid': self.userID,
-                            'maxSessionTime': self.maxSessionTime, #seen None
-                            'userType': self.userType,
-                            'role': self.role,
-                            'address': self.address,
-                            'inDetention': self.inDetention
-                            },
+                'languageID': self.languageID,
+                'userid': self.userID,
+                'maxSessionTime': self.maxSessionTime,  #seen None
+                'userType': self.userType,
+                'role': self.role,
+                'address': self.address,
+                'inDetention': self.inDetention
+            },
             'client_hash': self.clientHash,
             'user_clientid': self.userClientID
         }
