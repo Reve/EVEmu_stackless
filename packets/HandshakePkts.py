@@ -1,4 +1,4 @@
-# first packet sent to the client to make sure we are talking with the right client
+# Packets for handling Crypto Handshake
 class VersionExchangeServerPkt:
     def __init__(self, birthday, machoNet, userCount, versionNumber, buildVersion, projVersion):
         self.birthday = birthday

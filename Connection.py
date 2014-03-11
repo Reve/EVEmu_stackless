@@ -1,7 +1,7 @@
 import logging
 import stackless
 
-from EVESession import EVESession
+from Client import Client
 
 
 class Connection:
@@ -19,20 +19,18 @@ class Connection:
 
         self.control = control
         self.manager = manager
-        
-        self.session = EVESession(self)
-        
-        stackless.schedule()
+
+        self.services = []
+        self.entity_list = []
 
     def network(self, clientsocket, address):
         logging.info("Client %s:%s connected!" % (address[0], address[1]))
 
-        # Handshake with the client see EVESession.py for details
-        # handshake(clientsocket)
+        # Create new client
+        client = Client((clientsocket, address), self.services)
 
-        # If all is good:
-        # We add the client to clients list
-        # We start to listen for packets from the client
+        # Add client to entity list
+        self.entity_list.append(client)
 
         data = ''
         while clientsocket.connect:
@@ -47,6 +45,7 @@ class Connection:
 
         # Loop over, connection is broken
         self.close(clientsocket)
+        self.entity_list.remove(client)
 
     def close(self, clientsocket):
         clientsocket.close()

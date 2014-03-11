@@ -1,5 +1,5 @@
-EVEmu_stackless
-===============
+# EVEmu_stackless
+
 # What are the benefits of this Python variant?
 
 A small advantage is that recursions are no longer limited by the size of the C stack, but only by the amount of available heap memory. But that's not the major point.
@@ -30,9 +30,6 @@ Stackless is completely compatible with Standard Python, it just adds some funct
 
 # Need I say more? ...tought so
 
+## EVEmu server written in it's original language.
 
-===========================
-
-# EVEmu server written in it's original language.
-
-# No functionality at the moment. Stay tuned...
+## No functionality at the moment. Stay tuned...
