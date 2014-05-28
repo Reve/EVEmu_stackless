@@ -54,3 +54,5 @@ docs/_build/
 # PyCharm stuff:
 .idea
 
+# DS Store
+*.DS
