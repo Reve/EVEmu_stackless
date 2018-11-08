@@ -8,7 +8,7 @@ class VersionExchangeServerPkt:
         self.buildVersion = buildVersion
         self.projVersion = projVersion
 
-    def getPacket(self):
+    def encode(self):
         return (
             self.birthday,
             self.machoNet,
@@ -21,15 +21,16 @@ class VersionExchangeServerPkt:
 
 
 class VersionExchangeClientPkt:
-    def __init__(self, birthday, machoNet, userCount, versionNumber, buildVersion, projVersion):
-        self.birthday = birthday
-        self.machoNet = machoNet
-        self.userCount = userCount
-        self.versionNumber = versionNumber
-        self.buildVersion = buildVersion
-        self.projVersion = projVersion
+    def __init__(self, pkt):
+        print(pkt)
+        self.birthday = pkt[0]
+        self.machoNet = pkt[1]
+        self.userCount = pkt[2]
+        self.versionNumber = pkt[3]
+        self.buildVersion = pkt[4]
+        self.projVersion = pkt[5]
 
-    def getPacket(self):
+    def encode(self):
         return (
             self.birthday,
             self.machoNet,
@@ -45,7 +46,7 @@ class NetCommand_QC:
     def __init__(self, queuePosition):
         self.queuePosition = queuePosition
 
-    def getPacket(self):
+    def encode(self):
         return None, self.queuePosition
 
 
@@ -53,7 +54,7 @@ class NetCommand_VK:
     def __init__(self, vipKey):
         self.vipKey = vipKey
 
-    def getPacket(self):
+    def encode(self):
         return None, self.vipKey
 
 
@@ -62,7 +63,7 @@ class CryptoRequestPacket:
         self.keyVersion = keyVersion
         self.keyParams = keyParams
 
-    def getPacket(self):
+    def encode(self):
         return self.keyVersion, self.keyParams
 
 
@@ -74,7 +75,7 @@ class CryptoAPIRequestParams:
         self.provider = provider
         self.sessionKeyMethod = sessionKeyMethod
 
-    def getPacket(self):
+    def encode(self):
         return ({
                     'crypting_sessionkey': self.sessionKey,
                     'signing_hashmethod': self.hashMethod,
@@ -100,7 +101,7 @@ class CryptoChallengePacket:
         self.userLanguageID = userLanguageID
         self.userAffiliateID = userAffiliateID
 
-    def getPacket(self):
+    def encode(self):
         return (
             self.clientChallenge,
             {
@@ -118,25 +119,25 @@ class CryptoChallengePacket:
 
 
 class CryptoServerHandshake:
-    def __init__(self, serverChallenge, funcMarshaledCode, verification, context,
-                 challengeResponseHash, machoVersion, bootVersion, bootBuild, bootCodename,
-                 bootRegion, clusterUserCount, proxyNodeID, userLogonQueuePosition, imageServerURL):
-        self.serverChallenge = serverChallenge
-        self.funcMarshaledCode = funcMarshaledCode
-        self.verification = verification
-        self.context = context
-        self.challengeResponseHash = challengeResponseHash
-        self.machoVersion = machoVersion
-        self.bootVersion = bootVersion
-        self.bootBuild = bootBuild
-        self.bootCodename = bootCodename
-        self.bootRegion = bootRegion
-        self.clusterUserCount = clusterUserCount
-        self.proxyNodeID = proxyNodeID
-        self.userLogonQueuePosition = userLogonQueuePosition
-        self.imageServerURL = imageServerURL
+    serverChallenge = None
+    funcMarshaledCode = None
+    verification = None
+    context = None
+    challengeResponseHash = None
+    machoVersion = None
+    bootVersion = None
+    bootBuild = None
+    bootCodename = None
+    bootRegion = None
+    clusterUserCount = None
+    proxyNodeID = None
+    userLogonQueuePosition = None
+    imageServerURL = None
 
-    def getPacket(self):
+    def __init__(self):
+        pass
+
+    def encode(self):
         return (
             self.serverChallenge,
             (
@@ -159,12 +160,14 @@ class CryptoServerHandshake:
 
 
 class CryptoHandshakeResult:
-    def __init__(self, challengeResponseHash, funcOutput, funcResult):
-        self.challengeResponseHash = challengeResponseHash
-        self.funcOutput = funcOutput
-        self.funcResult = funcResult
+    challengeResponseHash = None
+    funcOutput = None
+    funcResult = None
 
-    def getPacket(self):
+    def __init__(self):
+        pass
+
+    def encode(self):
         return (
             self.challengeResponseHash,
             self.funcOutput,
@@ -173,20 +176,21 @@ class CryptoHandshakeResult:
 
 
 class CryptoHandshakeResultAck:
-    def __init__(self, liveUpdates, languageID, userID, maxSessionTime, userType,
-                 role, address, inDetention, clientHash, userClientID):
-        self.liveUpdates = liveUpdates
-        self.languageID = languageID
-        self.userID = userID
-        self.maxSessionTime = maxSessionTime
-        self.userType = userType
-        self.role = role
-        self.address = address
-        self.inDetention = inDetention
-        self.clientHash = clientHash
-        self.userClientID = userClientID
+    liveUpdates = None
+    languageID = None
+    userID = None
+    maxSessionTime = None
+    userType = None
+    role = None
+    address = None
+    inDetention = None
+    clientHash = None
+    userClientID = None
+    
+    def __init__(self):
+        pass    
 
-    def getPacket(self):
+    def encode(self):
         return {
             'liveUpdates': self.liveUpdates,
             'session_init': {

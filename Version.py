@@ -1,8 +1,8 @@
 class EVEVersion():
 
-	EVEVersionNumber = 7.31
-	MachoNetVersion = 320
-	EVEBuildVersion = 360229
+	EVEVersionNumber = 7.30
+	MachoNetVersion = 315
+	EVEBuildVersion = 353549
 
 	EVEProjectCodename = "EVE-EVE-TRANQUILITY"
 	EVEProjectRegion = "ccp"

@@ -55,4 +55,5 @@ docs/_build/
 .idea
 
 # DS Store
-*.DS
+.DS_Store
+._.DS_Store
